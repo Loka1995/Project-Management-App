@@ -15,9 +15,9 @@ function App() {
   const date = useRef();
 
   function createProjectHandle() {
-    setIsAddProject(true);
-    setIsHomePageOpen(false);
-    setViewProjectDetails(false);
+    setIsAddProject(() => true);
+    setIsHomePageOpen(() => false);
+    setViewProjectDetails(() => false);
   }
 
   //Handle the input data to enter new project.
@@ -32,17 +32,16 @@ function App() {
       });
       return prevProjectsCopy;
     })
-    setIsAddProject(false);
-    setIsHomePageOpen(true);
+    setIsAddProject(() => false);
+    setIsHomePageOpen(() => true);
   }
 
   //Handle project selection from sidebar.
-
   function sidebarProjectSelectHandle(projectIndex) {
     setSelectedProjectIndex(() => projectIndex);
-    setIsAddProject(false);
-    setIsHomePageOpen(false);
-    setViewProjectDetails(true);
+    setIsAddProject(() => false);
+    setIsHomePageOpen(() => false);
+    setViewProjectDetails(() => true);
   }
 
   // delete the project
@@ -51,9 +50,9 @@ function App() {
       const updatedProjects = prevProjects.filter((project, index) => index !== selectedProjectIndex);
       return updatedProjects;
     });
-    setViewProjectDetails(false);
-    setIsAddProject(false);
-    setIsHomePageOpen(true);
+    setViewProjectDetails(() => false);
+    setIsAddProject(() => false);
+    setIsHomePageOpen(() => true);
   }
 
   // Add tasks to a project
