@@ -4,18 +4,12 @@ import NoProjSelectedView from "./components/NoProjectSelected/NoProjSelectedVie
 import ProjectDetails from "./components/ProjectDetails/ProjectDetails";
 import Sidebar from "./components/Sidebar/Sidebar";
 
-function reAssignID(projects) {
-  for (let i = 0; i < projects.length; i++) {
-    projects[i].projID = i + 1;
-  }
-}
-
 function App() {
   const [isAddProject, setIsAddProject] = useState(false);
   const [isHomePageOpen, setIsHomePageOpen] = useState(true);
   const [viewProjectDetails, setViewProjectDetails] = useState(false);
   const [projects, setProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(0);
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState(-1);
   const title = useRef();
   const description = useRef();
   const date = useRef();
@@ -31,7 +25,6 @@ function App() {
     setProjects(prevProjects => {
       const prevProjectsCopy = [...prevProjects];
       prevProjectsCopy.push({
-        projID: prevProjectsCopy.length + 1,
         title: title.current.value,
         description: description.current.value,
         date: date.current.value,
@@ -45,30 +38,29 @@ function App() {
 
   //Handle project selection from sidebar.
 
-  function sidebarProjectSelectHandle(projectID) {
-    setSelectedProject(() => projectID);
+  function sidebarProjectSelectHandle(projectIndex) {
+    setSelectedProjectIndex(() => projectIndex);
     setIsAddProject(false);
     setIsHomePageOpen(false);
     setViewProjectDetails(true);
   }
 
   // delete the project
-  function deleteHandle(projectID) {
+  function deleteHandle() {
     setProjects(prevProjects => {
-      const updatedProjects = prevProjects.filter(project => project.projID !== projectID);
+      const updatedProjects = prevProjects.filter((project, index) => index !== selectedProjectIndex);
       return updatedProjects;
     });
-    setSelectedProject(0);
+    setViewProjectDetails(false);
     setIsAddProject(false);
     setIsHomePageOpen(true);
-    setViewProjectDetails(false);
   }
 
   // Add tasks to a project
   function addTaskHandle(task) {
     setProjects(projects => {
-      const updatedProjects = projects.map(project => {
-        if (project.projID === selectedProject) {
+      const updatedProjects = projects.map((project, index) => {
+        if (index === selectedProjectIndex) {
           return {
             ...project,
             tasks: [...project.tasks, task]
@@ -83,11 +75,11 @@ function App() {
   // Clear tasks of a project 
   function clearTaskHandle(taskIndex) {
     setProjects(projects => {
-      const updatedProjects = projects.map(project => {
-        if (project.projID === selectedProject) {
+      const updatedProjects = projects.map((project, index) => {
+        if (index === selectedProjectIndex) {
           return {
             ...project,
-            tasks: project.tasks.filter((task, index) => index !== taskIndex )
+            tasks: project.tasks.filter((task, taskIn) => taskIn !== taskIndex)
           };
         }
         return project;
@@ -117,7 +109,7 @@ function App() {
           />}
         {viewProjectDetails &&
           <ProjectDetails
-            selectedProject={projects[selectedProject - 1]}
+            selectedProject={projects[selectedProjectIndex]}
             onDelete={deleteHandle}
             onAddTask={addTaskHandle}
             onClear={clearTaskHandle}

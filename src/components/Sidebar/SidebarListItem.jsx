@@ -1,6 +1,6 @@
-const SidebarListItem = function SidebarListItem({ project, onSelect }) {
+const SidebarListItem = function SidebarListItem({ projectIndex, project, onSelect }) {
   function clickHandle() {
-    onSelect(project.projID);
+    onSelect(projectIndex);
   }
 
   return (

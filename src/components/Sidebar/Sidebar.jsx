@@ -17,6 +17,7 @@ export default function Sidebar({ onNewProject, projectData, onSelect }) {
               key={index}
               project={project}
               onSelect={onSelect}
+              projectIndex={index}
             />
           }
         })}
