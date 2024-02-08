@@ -18,6 +18,7 @@ function App() {
     setIsAddProject(() => true);
     setIsHomePageOpen(() => false);
     setViewProjectDetails(() => false);
+    setSelectedProjectIndex(() => -1);
   }
 
   //Handle the input data to enter new project.
@@ -34,6 +35,7 @@ function App() {
     })
     setIsAddProject(() => false);
     setIsHomePageOpen(() => true);
+    setSelectedProjectIndex(() => -1);
   }
 
   //Handle project selection from sidebar.
@@ -50,6 +52,7 @@ function App() {
       const updatedProjects = prevProjects.filter((project, index) => index !== selectedProjectIndex);
       return updatedProjects;
     });
+    setSelectedProjectIndex(() => -1)
     setViewProjectDetails(() => false);
     setIsAddProject(() => false);
     setIsHomePageOpen(() => true);
@@ -94,6 +97,7 @@ function App() {
           onNewProject={createProjectHandle}
           projectData={projects}
           onSelect={sidebarProjectSelectHandle}
+          activeIndex={selectedProjectIndex}
         />
         {isHomePageOpen &&
           <NoProjSelectedView

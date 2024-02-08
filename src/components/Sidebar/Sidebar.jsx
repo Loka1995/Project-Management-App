@@ -1,6 +1,6 @@
 import SidebarListItem from "./SidebarListItem";
 
-export default function Sidebar({ onNewProject, projectData, onSelect }) {
+export default function Sidebar({ onNewProject, projectData, onSelect, activeIndex }) {
   return (
     <aside className="flex flex-col p-8 bg-zinc-950 h-screen w-3/12 mt-8 rounded-tr-xl">
       <h2 className="text-white text-2xl py-8 uppercase">Your Projects</h2>
@@ -18,6 +18,7 @@ export default function Sidebar({ onNewProject, projectData, onSelect }) {
               project={project}
               onSelect={onSelect}
               projectIndex={index}
+              active={activeIndex === index}
             />
           }
         })}
